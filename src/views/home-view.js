@@ -14,13 +14,14 @@ export function renderHomeView() {
           <div class="container">
             <div class="hero-text">
               <h1 class="hero-title">
-                VITAL: Detectando la<br>
-                <span class="highlight">Crisis Silenciosa</span> Antes<br>
+                VITAL:<br>
+                Detectando la<br>
+                Crisis Silenciosa Antes<br>
                 de que Golpee.
               </h1>
               <p class="hero-subtitle">
-                Salud proactiva para El Salvador. Tecnología usable +<br>
-                promotores comunitarios para salvar vidas.
+                Salud proactiva para El Salvador. Tecnología usable<br>
+                + promotores comunitarios para salvar vidas.
               </p>
               <app-button variant="primary" size="lg" class="hero-cta">
                 Conoce el Modelo
@@ -189,14 +190,15 @@ export function renderHomeView() {
       /* Hero Section */
       .hero {
         position: relative;
-        min-height: 600px;
+        min-height: calc(100vh - 64px);
         display: flex;
         align-items: center;
-        background: linear-gradient(135deg, rgba(26, 184, 184, 0.05) 0%, rgba(74, 155, 107, 0.05) 100%),
-                    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f0fdf4" width="1200" height="600"/></svg>');
+        background-image: url('https://res.cloudinary.com/dbtua8mmu/image/upload/v1763755016/Gemini_Generated_Image_m2wl6xm2wl6xm2wl_uidziy.png');
         background-size: cover;
         background-position: center;
+        background-repeat: no-repeat;
         overflow: hidden;
+        margin-top: 0;
       }
 
       .hero::before {
@@ -217,9 +219,8 @@ export function renderHomeView() {
         left: 0;
         right: 0;
         bottom: 0;
-        background: radial-gradient(circle at 30% 50%, 
-          rgba(26, 184, 184, 0.15) 0%, 
-          transparent 50%);
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 1;
       }
 
       .hero-content {
@@ -227,11 +228,15 @@ export function renderHomeView() {
         z-index: 2;
         width: 100%;
         padding: 4rem 0;
+        min-height: 100%;
+        display: flex;
+        align-items: center;
       }
 
       .hero-text {
-        max-width: 800px;
+        max-width: 700px;
         animation: fadeIn 1s ease-out;
+        text-align: left;
       }
 
       .hero-title {
@@ -239,23 +244,18 @@ export function renderHomeView() {
         font-size: 3.5rem;
         font-weight: 900;
         line-height: 1.2;
-        color: #1a1a1a;
+        color: white;
         margin-bottom: 1.5rem;
-      }
-
-      .hero-title .highlight {
-        background: linear-gradient(135deg, #1AB8B8 0%, #4A9B6B 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       }
 
       .hero-subtitle {
         font-size: 1.25rem;
         line-height: 1.6;
-        color: #555;
+        color: white;
         margin-bottom: 2.5rem;
         font-weight: 400;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       }
 
       .hero-cta {
@@ -510,12 +510,31 @@ export function renderHomeView() {
 
       /* Responsive */
       @media (max-width: 768px) {
+        .hero {
+          min-height: calc(100vh - 64px);
+          background-position: center right;
+        }
+
+        .hero-content {
+          padding: 2rem 0;
+        }
+
+        .hero-text {
+          max-width: 100%;
+        }
+
         .hero-title {
           font-size: 2.5rem;
+          line-height: 1.1;
         }
 
         .hero-subtitle {
           font-size: 1.1rem;
+          line-height: 1.5;
+        }
+
+        .hero-overlay {
+          background: rgba(0, 0, 0, 0.4);
         }
 
         .steps-container {
