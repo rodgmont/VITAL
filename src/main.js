@@ -26,6 +26,7 @@ import { renderReportsView } from './views/reports/reports-view.js';
 import { renderAIConfigView } from './views/ai/ai-config-view.js';
 import { renderReferencesView } from './views/references/references-view.js';
 import { renderSystemAdminView } from './views/admin/system-admin-view.js';
+import { renderMobileAppDemoView } from './views/mobile-app-demo-view.js';
 
 // Import base components (v1.0)
 import './components/dynamic-navbar.js';
@@ -42,6 +43,42 @@ import './components/multi-series-chart.js';
 import './components/status-badge.js';
 
 /**
+ * Auth guard for ADMIN routes (VITAL Empresarial)
+ */
+function requireAdmin(renderFn) {
+    return () => {
+        if (!authService.isAuthenticated()) {
+            router.navigate('/login');
+            return '<div>Redirigiendo a login...</div>';
+        }
+
+        if (!authService.isAdmin()) {
+            return '<div style="padding: 2rem; text-align: center;"><h2>⛔ Acceso Denegado</h2><p>Este módulo requiere acceso de VITAL Empresarial</p></div>';
+        }
+
+        return renderFn();
+    };
+}
+
+/**
+ * Auth guard for USER routes (VITAL Persona)
+ */
+function requireUser(renderFn) {
+    return () => {
+        if (!authService.isAuthenticated()) {
+            router.navigate('/login');
+            return '<div>Redirigiendo a login...</div>';
+        }
+
+        if (!authService.isUser()) {
+            return '<div style="padding: 2rem; text-align: center;"><h2>⛔ Acceso Denegado</h2><p>Este módulo requiere acceso de VITAL Persona</p></div>';
+        }
+
+        return renderFn();
+    };
+}
+
+/**
  * Initialize the application
  */
 function initApp() {
@@ -49,6 +86,8 @@ function initApp() {
 
     // Register PUBLIC routes
     router.register('/', renderHomeView);
+    router.register('/login', renderLoginView);
+    router.register('/mobile-demo', renderMobileAppDemoView);
 
     // Register USER routes (VITAL PERSONA - 6 módulos) - SIN AUTENTICACIÓN
     router.register('/dashboard', renderDashboardView);
@@ -81,7 +120,7 @@ function initApp() {
 
     console.log('✅ VITAL v2.0 Platform initialized');
     console.log('🏢 VITAL Empresarial: 8 módulos admin');
-    console.log('👤 VITAL Persona: 6 módulos usuario');
+    console.log('� VITAL Persona: 6 módulos usuario');
 }
 
 // Initialize when DOM is ready

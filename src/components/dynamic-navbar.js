@@ -10,6 +10,10 @@ class DynamicNavbar extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    // Default mode: 'user' or 'business'
+    this.currentMode = localStorage.getItem('vitalMode') || 'user';
+    // Track menu state
+    this.menuOpen = false;
   }
 
   connectedCallback() {
@@ -20,6 +24,26 @@ class DynamicNavbar extends HTMLElement {
     window.addEventListener('hashchange', () => this.render());
   }
 
+  switchMode(mode) {
+    this.currentMode = mode;
+    localStorage.setItem('vitalMode', mode);
+    // Keep menu state when switching modes
+    const wasOpen = this.menuOpen;
+    this.render();
+    if (wasOpen) {
+      // Restore menu open state after render
+      setTimeout(() => {
+        const navLinks = this.shadowRoot.querySelector('.nav-links');
+        const menuToggle = this.shadowRoot.querySelector('.menu-toggle');
+        if (navLinks && menuToggle) {
+          navLinks.classList.add('active');
+          menuToggle.classList.add('active');
+        }
+      }, 0);
+    }
+    this.setupEventListeners();
+  }
+
   setupEventListeners() {
     const menuToggle = this.shadowRoot.querySelector('.menu-toggle');
     const navLinks = this.shadowRoot.querySelector('.nav-links');
@@ -28,6 +52,8 @@ class DynamicNavbar extends HTMLElement {
       menuToggle.addEventListener('click', () => {
         navLinks.classList.toggle('active');
         menuToggle.classList.toggle('active');
+        // Update menu state
+        this.menuOpen = navLinks.classList.contains('active');
       });
     }
 
@@ -37,34 +63,36 @@ class DynamicNavbar extends HTMLElement {
       link.addEventListener('click', () => {
         navLinks?.classList.remove('active');
         menuToggle?.classList.remove('active');
+        // Update menu state
+        this.menuOpen = false;
       });
     });
 
-    // Logout button
-    const logoutBtn = this.shadowRoot.querySelector('.logout-btn');
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        authService.logout();
+    // Mode toggle buttons
+    const modeButtons = this.shadowRoot.querySelectorAll('.mode-option');
+    modeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mode = btn.dataset.mode;
+        this.switchMode(mode);
       });
-    }
+    });
   }
 
   getMenuItems() {
-    const user = authService.getCurrentUser();
-
-    if (!user) {
-      // Public menu
-      return [
+    const allItems = {
+      common: [
         { label: 'Inicio', href: '#/', icon: '🏠' },
-        { label: 'Iniciar Sesión', href: '#/login', icon: '🔑', cta: true }
-      ];
-    }
-
-    // Admin menu
-    if (authService.hasPermission('VIEW_ADMIN_DASHBOARD')) {
-      return [
-        { label: 'Dashboard', href: '#/admin/dashboard', icon: '📊' },
+        { label: '📱 Demo App', href: '#/mobile-demo', icon: '📱' }
+      ],
+      user: [
+        { label: 'Mi Panel', href: '#/dashboard', icon: '📊' },
+        { label: 'Indicadores', href: '#/indicators', icon: '📈' },
+        { label: 'Recomendaciones', href: '#/recommendations', icon: '💡' },
+        { label: 'Alertas', href: '#/alerts', icon: '🔔' },
+        { label: 'Perfil', href: '#/profile', icon: '👤' }
+      ],
+      business: [
+        { label: 'Admin Dashboard', href: '#/admin/dashboard', icon: '🏢' },
         { label: 'Pacientes', href: '#/admin/patients', icon: '👥' },
         { label: 'Promotores', href: '#/admin/promoters', icon: '👨‍⚕️' },
         { label: 'Dispositivos', href: '#/admin/devices', icon: '⌚' },
@@ -72,22 +100,14 @@ class DynamicNavbar extends HTMLElement {
         { label: 'IA', href: '#/admin/ai', icon: '🤖' },
         { label: 'Referencias', href: '#/admin/references', icon: '🏥' },
         { label: 'Sistema', href: '#/admin/system', icon: '⚙️' }
-      ];
-    }
+      ]
+    };
 
-    // Patient/user menu
-    return [
-      { label: 'Inicio', href: '#/', icon: '🏠' },
-      { label: 'Mi Panel', href: '#/dashboard', icon: '📊' },
-      { label: 'Indicadores', href: '#/indicators', icon: '📈' },
-      { label: 'Recomendaciones', href: '#/recommendations', icon: '💡' },
-      { label: 'Alertas', href: '#/alerts', icon: '🔔' },
-      { label: 'Perfil', href: '#/profile', icon: '👤' }
-    ];
+    // Return common items + mode-specific items
+    return [...allItems.common, ...allItems[this.currentMode]];
   }
 
   render() {
-    const user = authService.getCurrentUser();
     const menuItems = this.getMenuItems();
     const currentHash = window.location.hash || '#/';
 
@@ -117,6 +137,12 @@ class DynamicNavbar extends HTMLElement {
           justify-content: space-between;
         }
 
+        .left-section {
+          display: flex;
+          align-items: center;
+          gap: 2rem;
+        }
+
         .logo {
           display: flex;
           align-items: center;
@@ -131,6 +157,38 @@ class DynamicNavbar extends HTMLElement {
 
         .logo:hover {
           transform: scale(1.05);
+        }
+
+        /* Toggle Switch */
+        .mode-toggle {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: #F3F4F6;
+          border-radius: 999px;
+          padding: 0.25rem;
+        }
+
+        .mode-option {
+          padding: 0.5rem 1rem;
+          border-radius: 999px;
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          background: transparent;
+          color: #6B7280;
+          border: none;
+        }
+
+        .mode-option.active {
+          background: #1AB8B8;
+          color: white;
+          box-shadow: 0 2px 8px rgba(26, 184, 184, 0.3);
+        }
+
+        .mode-option:hover:not(.active) {
+          color: #1AB8B8;
         }
 
         .user-info {
@@ -150,52 +208,56 @@ class DynamicNavbar extends HTMLElement {
         }
 
         .nav-links {
-          display: flex;
-          align-items: center;
-          gap: 1.5rem;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: rgba(255, 255, 255, 0.98);
+          backdrop-filter: blur(10px);
+          padding: 2rem;
+          gap: 1rem;
+          transform: translateY(-100%);
+          opacity: 0;
+          pointer-events: none;
+          transition: all 0.3s ease;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
           list-style: none;
           margin: 0;
-          padding: 0;
+          z-index: 50;
+        }
+
+        .nav-links.active {
+          transform: translateY(0);
+          opacity: 1;
+          pointer-events: all;
         }
 
         .nav-link {
           text-decoration: none;
           color: #333;
-          font-weight: 500;
-          font-size: 0.9rem;
-          transition: color 0.3s ease;
+          font-weight: 600;
+          font-size: 1rem;
+          transition: all 0.3s ease;
           position: relative;
           display: flex;
           align-items: center;
-          gap: 0.4rem;
-        }
-
-        .nav-link::after {
-          content: '';
-          position: absolute;
-          bottom: -4px;
-          left: 0;
-          width: 0;
-          height: 2px;
-          background: #1AB8B8;
-          transition: width 0.3s ease;
+          gap: 0.75rem;
+          padding: 0.75rem 1rem;
+          border-radius: 8px;
         }
 
         .nav-link:hover {
+          background: #F3F4F6;
           color: #1AB8B8;
-        }
-
-        .nav-link:hover::after {
-          width: 100%;
+          transform: translateX(5px);
         }
 
         .nav-link.active {
+          background: #E0F2F1;
           color: #1AB8B8;
           font-weight: 700;
-        }
-
-        .nav-link.active::after {
-          width: 100%;
         }
 
         .nav-cta {
@@ -236,7 +298,7 @@ class DynamicNavbar extends HTMLElement {
         }
 
         .menu-toggle {
-          display: none;
+          display: flex;
           flex-direction: column;
           gap: 5px;
           background: none;
@@ -265,32 +327,18 @@ class DynamicNavbar extends HTMLElement {
           transform: rotate(-45deg) translate(7px, -7px);
         }
 
-        @media (max-width: 960px) {
-          .menu-toggle {
-            display: flex;
+        @media (max-width: 768px) {
+          .left-section {
+            gap: 1rem;
           }
 
-          .nav-links {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            flex-direction: column;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            gap: 1.5rem;
-            transform: translateY(-100%);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          .mode-toggle {
+            font-size: 0.75rem;
           }
 
-          .nav-links.active {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: all;
+          .mode-option {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.75rem;
           }
 
           .user-info {
@@ -302,15 +350,15 @@ class DynamicNavbar extends HTMLElement {
 
       <nav>
         <div class="nav-container">
-          <a href="#/" class="logo">
-            <span>💙 VITAL</span>
-            ${user ? `
-              <div class="user-info">
-                <span>${user.name}</span>
-                <span class="user-role">${authService.getRoleName(user.role)}</span>
-              </div>
-            ` : ''}
-          </a>
+          <div class="left-section">
+            <a href="#/" class="logo">
+              <span>💙 VITAL</span>
+            </a>
+            <div class="mode-toggle">
+              <button class="mode-option ${this.currentMode === 'user' ? 'active' : ''}" data-mode="user">👤 VITAL Persona</button>
+              <button class="mode-option ${this.currentMode === 'business' ? 'active' : ''}" data-mode="business">🏢 VITAL Asistent</button>
+            </div>
+          </div>
 
           <ul class="nav-links">
             ${menuItems.map(item => `
@@ -324,7 +372,6 @@ class DynamicNavbar extends HTMLElement {
                 </a>
               </li>
             `).join('')}
-            ${user ? '<li><button class="logout-btn">🚪 Salir</button></li>' : ''}
           </ul>
 
           <button class="menu-toggle" aria-label="Toggle menu">
