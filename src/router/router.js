@@ -4,6 +4,8 @@
  * Router SPA simple usando hash navigation
  */
 
+import { navigationService } from '../services/navigation.service.js';
+
 class Router {
     constructor() {
         this.routes = {};
@@ -37,6 +39,9 @@ class Router {
     handleRoute() {
         // Get the current hash (remove #)
         const hash = window.location.hash.slice(1) || '/';
+
+        // Sync with navigation service
+        navigationService.syncWithRouter();
 
         // Find the matching route
         const handler = this.routes[hash];
@@ -98,8 +103,8 @@ class Router {
      * Actualiza los links activos en la navegación
      */
     updateActiveNavLinks() {
-        // Get all nav links from shadow DOM
-        const navbar = document.querySelector('app-navbar');
+        // Get all nav links from shadow DOM of dynamic-navbar
+        const navbar = document.querySelector('dynamic-navbar');
         if (navbar && navbar.shadowRoot) {
             const links = navbar.shadowRoot.querySelectorAll('.nav-link');
             links.forEach(link => {

@@ -7,6 +7,7 @@
 import { router } from './router/router.js';
 import { state } from './store/state.js';
 import { authService, ROLES } from './services/auth.service.js';
+import { MODULES_CONFIG } from './config/modules.config.js';
 
 // Import USER views (v1.0) - VITAL PERSONA
 import { renderHomeView } from './views/home-view.js';
@@ -79,32 +80,64 @@ function requireUser(renderFn) {
 }
 
 /**
+ * Mapeo de IDs de módulos a funciones de renderizado
+ * Este mapeo conecta la configuración de módulos con las vistas
+ */
+const MODULE_RENDER_MAP = {
+    // Common modules
+    'home': renderHomeView,
+    'mobile-demo': renderMobileAppDemoView,
+    
+    // User modules (VITAL Persona)
+    'dashboard': renderDashboardView,
+    'indicators': renderIndicatorsView,
+    'recommendations': renderRecommendationsView,
+    'alerts': renderAlertsView,
+    'profile': renderProfileView,
+    
+    // Business modules (VITAL Asistent)
+    'admin-dashboard': renderAdminDashboardView,
+    'patients': renderPatientsListView,
+    'promoters': renderPromotersListView,
+    'devices': renderDevicesInventoryView,
+    'reports': renderReportsView,
+    'ai': renderAIConfigView,
+    'references': renderReferencesView,
+    'system': renderSystemAdminView
+};
+
+/**
+ * Registra todas las rutas desde la configuración centralizada
+ */
+function registerRoutesFromConfig() {
+    // Register public routes (not in modules config)
+    router.register('/login', renderLoginView);
+    
+    // Register all modules from config
+    const allModules = [
+        ...MODULES_CONFIG.common,
+        ...MODULES_CONFIG.user,
+        ...MODULES_CONFIG.business
+    ];
+    
+    allModules.forEach(module => {
+        const renderFn = MODULE_RENDER_MAP[module.id];
+        if (renderFn) {
+            router.register(module.path, renderFn);
+        } else {
+            console.warn(`No render function found for module: ${module.id}`);
+        }
+    });
+}
+
+/**
  * Initialize the application
  */
 function initApp() {
     console.log('🚀 Initializing VITAL v2.0 Platform...');
 
-    // Register PUBLIC routes
-    router.register('/', renderHomeView);
-    router.register('/login', renderLoginView);
-    router.register('/mobile-demo', renderMobileAppDemoView);
-
-    // Register USER routes (VITAL PERSONA - 6 módulos) - SIN AUTENTICACIÓN
-    router.register('/dashboard', renderDashboardView);
-    router.register('/indicators', renderIndicatorsView);
-    router.register('/recommendations', renderRecommendationsView);
-    router.register('/alerts', renderAlertsView);
-    router.register('/profile', renderProfileView);
-
-    // Register ADMIN routes (VITAL EMPRESARIAL - 8 módulos) - SIN AUTENTICACIÓN
-    router.register('/admin/dashboard', renderAdminDashboardView);
-    router.register('/admin/patients', renderPatientsListView);
-    router.register('/admin/promoters', renderPromotersListView);
-    router.register('/admin/devices', renderDevicesInventoryView);
-    router.register('/admin/reports', renderReportsView);
-    router.register('/admin/ai', renderAIConfigView);
-    router.register('/admin/references', renderReferencesView);
-    router.register('/admin/system', renderSystemAdminView);
+    // Register all routes from centralized config
+    registerRoutesFromConfig();
 
     // Subscribe to state changes for debugging
     state.subscribe((key, value) => {
