@@ -1,0 +1,23 @@
+{
+    "name": "vital-health-app",
+    "version": "1.0.0",
+    "description": "VITAL - Plataforma de Salud Preventiva para El Salvador",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "keywords": [
+        "health",
+        "preventive",
+        "wellness",
+        "vital",
+        "el-salvador"
+    ],
+    "author": "VITAL Team",
+    "license": "MIT",
+    "devDependencies": {
+        "vite": "^5.0.0"
+    }
+}

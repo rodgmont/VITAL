@@ -1,0 +1,225 @@
+/**
+ * VITAL Design System - CSS Variables
+ * 
+ * Este archivo contiene todas las variables de diseño utilizadas
+ * en la aplicación VITAL para mantener consistencia visual.
+ */
+
+:root {
+  /* ========================================
+     PALETA DE COLORES - WELLNESS THEME
+     ======================================== */
+  
+  /* Colores Primarios - Turquesa/Cyan (identidad VITAL) */
+  --color-primary-50: hsl(174, 80%, 95%);
+  --color-primary-100: hsl(174, 75%, 88%);
+  --color-primary-200: hsl(174, 70%, 75%);
+  --color-primary-300: hsl(174, 65%, 60%);
+  --color-primary-400: hsl(174, 60%, 50%);
+  --color-primary-500: hsl(174, 70%, 42%); /* Main - #1AB8B8 similar al de la imagen */
+  --color-primary-600: hsl(174, 75%, 35%);
+  --color-primary-700: hsl(174, 80%, 28%);
+  --color-primary-800: hsl(174, 85%, 20%);
+  --color-primary-900: hsl(174, 90%, 12%);
+
+  /* Colores Secundarios - Verde Salud */
+  --color-secondary-50: hsl(142, 70%, 95%);
+  --color-secondary-100: hsl(142, 65%, 85%);
+  --color-secondary-200: hsl(142, 60%, 70%);
+  --color-secondary-300: hsl(142, 55%, 55%);
+  --color-secondary-400: hsl(142, 50%, 45%);
+  --color-secondary-500: hsl(142, 55%, 38%);
+  --color-secondary-600: hsl(142, 60%, 30%);
+  --color-secondary-700: hsl(142, 65%, 22%);
+  --color-secondary-800: hsl(142, 70%, 15%);
+  --color-secondary-900: hsl(142, 75%, 10%);
+
+  /* Colores de Acento - Azul Confianza */
+  --color-accent-50: hsl(200, 80%, 95%);
+  --color-accent-100: hsl(200, 75%, 85%);
+  --color-accent-200: hsl(200, 70%, 70%);
+  --color-accent-300: hsl(200, 65%, 55%);
+  --color-accent-400: hsl(200, 60%, 45%);
+  --color-accent-500: hsl(200, 65%, 38%);
+  --color-accent-600: hsl(200, 70%, 30%);
+  --color-accent-700: hsl(200, 75%, 22%);
+  --color-accent-800: hsl(200, 80%, 15%);
+  --color-accent-900: hsl(200, 85%, 10%);
+
+  /* Grises Neutros Cálidos */
+  --color-gray-50: hsl(30, 20%, 98%);
+  --color-gray-100: hsl(30, 18%, 94%);
+  --color-gray-200: hsl(30, 15%, 85%);
+  --color-gray-300: hsl(30, 12%, 70%);
+  --color-gray-400: hsl(30, 10%, 55%);
+  --color-gray-500: hsl(30, 8%, 45%);
+  --color-gray-600: hsl(30, 10%, 35%);
+  --color-gray-700: hsl(30, 12%, 25%);
+  --color-gray-800: hsl(30, 15%, 15%);
+  --color-gray-900: hsl(30, 18%, 8%);
+
+  /* Colores de Estado */
+  --color-success: hsl(142, 70%, 45%);
+  --color-success-light: hsl(142, 60%, 90%);
+  --color-warning: hsl(38, 92%, 50%);
+  --color-warning-light: hsl(38, 85%, 92%);
+  --color-error: hsl(0, 70%, 55%);
+  --color-error-light: hsl(0, 65%, 92%);
+  --color-info: hsl(200, 70%, 50%);
+  --color-info-light: hsl(200, 65%, 92%);
+
+  /* Colores de Fondo */
+  --color-bg-primary: hsl(30, 20%, 99%);
+  --color-bg-secondary: hsl(30, 18%, 96%);
+  --color-bg-tertiary: hsl(30, 15%, 92%);
+  --color-bg-dark: hsl(30, 18%, 8%);
+
+  /* Colores de Texto */
+  --color-text-primary: hsl(30, 18%, 12%);
+  --color-text-secondary: hsl(30, 12%, 35%);
+  --color-text-tertiary: hsl(30, 10%, 55%);
+  --color-text-inverse: hsl(30, 20%, 98%);
+
+  /* ========================================
+     TIPOGRAFÍA
+     ======================================== */
+  
+  /* Font Families */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Outfit', 'Inter', sans-serif;
+  --font-mono: 'Fira Code', 'Courier New', monospace;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;      /* 12px */
+  --text-sm: 0.875rem;     /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg: 1.125rem;     /* 18px */
+  --text-xl: 1.25rem;      /* 20px */
+  --text-2xl: 1.5rem;      /* 24px */
+  --text-3xl: 1.875rem;    /* 30px */
+  --text-4xl: 2.25rem;     /* 36px */
+  --text-5xl: 3rem;        /* 48px */
+  --text-6xl: 3.75rem;     /* 60px */
+  --text-7xl: 4.5rem;      /* 72px */
+
+  /* Font Weights */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  /* ========================================
+     ESPACIADO
+     ======================================== */
+  
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+
+  /* ========================================
+     RADIOS DE BORDE
+     ======================================== */
+  
+  --radius-sm: 0.25rem;   /* 4px */
+  --radius-md: 0.5rem;    /* 8px */
+  --radius-lg: 0.75rem;   /* 12px */
+  --radius-xl: 1rem;      /* 16px */
+  --radius-2xl: 1.5rem;   /* 24px */
+  --radius-3xl: 2rem;     /* 32px */
+  --radius-full: 9999px;
+
+  /* ========================================
+     SOMBRAS
+     ======================================== */
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+
+  /* Sombras de Color */
+  --shadow-primary: 0 10px 30px -5px hsla(174, 70%, 42%, 0.3);
+  --shadow-secondary: 0 10px 30px -5px hsla(142, 55%, 38%, 0.3);
+  --shadow-accent: 0 10px 30px -5px hsla(200, 65%, 38%, 0.3);
+
+  /* ========================================
+     TRANSICIONES Y ANIMACIONES
+     ======================================== */
+  
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 250ms ease-in-out;
+  --transition-slow: 400ms ease-in-out;
+  --transition-slower: 600ms ease-in-out;
+
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* ========================================
+     Z-INDEX
+     ======================================== */
+  
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+
+  /* ========================================
+     BREAKPOINTS (para usar con @media)
+     ======================================== */
+  
+  --screen-sm: 640px;
+  --screen-md: 768px;
+  --screen-lg: 1024px;
+  --screen-xl: 1280px;
+  --screen-2xl: 1536px;
+
+  /* ========================================
+     EFECTOS ESPECIALES
+     ======================================== */
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-dark: rgba(0, 0, 0, 0.3);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-blur: blur(10px);
+
+  /* Gradientes */
+  --gradient-primary: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-600) 100%);
+  --gradient-secondary: linear-gradient(135deg, var(--color-secondary-400) 0%, var(--color-secondary-600) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--color-accent-400) 0%, var(--color-accent-600) 100%);
+  --gradient-wellness: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-secondary-500) 50%, var(--color-accent-400) 100%);
+  --gradient-warm: linear-gradient(135deg, hsl(38, 92%, 65%) 0%, hsl(25, 95%, 60%) 100%);
+
+  /* Overlay */
+  --overlay-light: rgba(255, 255, 255, 0.9);
+  --overlay-dark: rgba(0, 0, 0, 0.5);
+}

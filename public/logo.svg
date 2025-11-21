@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="95" fill="#1AB8B8" opacity="0.1"/>
+  
+  <!-- Heart/Health Icon -->
+  <g transform="translate(100, 100)">
+    <!-- Heart shape with pulse -->
+    <path d="M 0,-25 C -15,-40 -40,-40 -40,-15 C -40,5 0,35 0,35 C 0,35 40,5 40,-15 C 40,-40 15,-40 0,-25 Z" 
+          fill="#1AB8B8" 
+          stroke="#4A9B6B" 
+          stroke-width="2"/>
+    
+    <!-- Pulse line -->
+    <path d="M -30,0 L -20,0 L -15,-15 L -10,15 L -5,-5 L 0,0 L 30,0" 
+          fill="none" 
+          stroke="white" 
+          stroke-width="3" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"
+          opacity="0.9"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="100" y="170" 
+        font-family="Outfit, sans-serif" 
+        font-size="36" 
+        font-weight="900" 
+        fill="#1AB8B8" 
+        text-anchor="middle">
+    VITAL
+  </text>
+</svg>
